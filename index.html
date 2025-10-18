@@ -124,34 +124,39 @@
 
   <script>
   window.addEventListener("DOMContentLoaded", () => {
-    const usuarioNome = localStorage.getItem("usuarioNome");
-    const navbar = document.querySelector(".navbar-nav");
+  const usuarioNome = localStorage.getItem("usuarioNome");
+  const navbar = document.querySelector(".navbar-nav");
 
-    if (usuarioNome) {
-      // Remove o link Registrar
-      const registrarLink = navbar.querySelector(".registrar-link");
-      if (registrarLink) registrarLink.remove();
+  if (usuarioNome) {
+    // Remove link Registrar
+    const registrarLink = navbar.querySelector(".registrar-link");
+    if (registrarLink) registrarLink.remove();
 
-      // Cria dropdown com nome e sair
-      const li = document.createElement("li");
-      li.className = "nav-item dropdown";
-      li.innerHTML = `
-        <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" role="button" data-bs-toggle="dropdown">
-          ${usuarioNome}
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#" id="logout-btn">Sair</a></li>
-        </ul>
-      `;
-      navbar.appendChild(li);
+    // Remove dropdown antigo, se existir
+    const existingDropdown = navbar.querySelector(".nav-item.dropdown");
+    if (existingDropdown) existingDropdown.remove();
 
-      document.getElementById("logout-btn").addEventListener("click", () => {
-        localStorage.removeItem("usuarioNome");
-        localStorage.removeItem("usuarioEmail");
-        location.reload();
-      });
-    }
-  });
+    // Cria dropdown
+    const li = document.createElement("li");
+    li.className = "nav-item dropdown";
+    li.innerHTML = `
+      <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+        ${usuarioNome}
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#" id="logout-btn">Sair</a></li>
+      </ul>
+    `;
+    navbar.appendChild(li);
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      localStorage.removeItem("usuarioNome");
+      localStorage.removeItem("usuarioEmail");
+      location.reload();
+    });
+  }
+});
+
 
   
   </script>

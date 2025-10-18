@@ -63,7 +63,9 @@
   <!-- Firebase + JS -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, setDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where } 
+    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
 
     const firebaseConfig = {
       apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
@@ -141,18 +143,18 @@
         const num = snapshot.size + 1;
         const docName = `user${num}`;
 
-        await setDoc(doc(db, "contas", docName), {
-          nome: nome,
-          email: email,
-          senha: senha,
-          tipo: "utilizador"
-        });
+       await addDoc(collection(db, "contas"), {
+        nome: nome,
+        email: email,
+        senha: senha,
+        tipo: "utilizador"
+      });
 
         localStorage.setItem("usuarioNome", nome);
         localStorage.setItem("usuarioEmail", email);
         showToast("Conta criada com sucesso!", "success");
 
-        setTimeout(() => window.location.href = "index.html", 2000);
+        setTimeout(() => window.location.href = "index.html", 500);
       } catch (error) {
         console.error("Erro ao registrar:", error);
         showToast("Erro ao criar conta. Veja o console.", "error");
