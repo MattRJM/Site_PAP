@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Sistema de Votação Escolar</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a2e0e6da3d.js" crossorigin="anonymous"></script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
+      authDomain: "pap---votacao.firebaseapp.com",
+      projectId: "pap---votacao",
+      storageBucket: "pap---votacao.firebasestorage.app",
+      messagingSenderId: "940095484879",
+      appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
+      measurementId: "G-D49CT9GVF0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function showToast(message, type = "info") {
+  const container = document.querySelector(".toast-container");
+  const toastEl = document.createElement("div");
+  const bgColor = {
+    success: "bg-success text-white",
+    error: "bg-danger text-white",
+    info: "bg-primary text-white",
+    warning: "bg-warning text-dark"
+  }[type] || "bg-primary text-white";
+
+  toastEl.className = `toast align-items-center ${bgColor} border-0`;
+  toastEl.setAttribute("role", "alert");
+  toastEl.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  `;
+
+  container.appendChild(toastEl);
+
+  // Garantir animação
+  requestAnimationFrame(() => toastEl.classList.add("showing"));
+
+  const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 2000 });
+  toastEl.addEventListener("hidden.bs.toast", () => toastEl.remove());
+  toast.show();
+}
+
+
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("loginForm").addEventListener("submit", fazerLogin);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="toast-container"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand text-primary" href="index.html">Votação Escolar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+        </ul>
+        <button id="theme-toggle" class="btn btn-outline-primary ms-3"><i class="fas fa-moon"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Formulário -->
+  <section class="d-flex align-items-center justify-content-center vh-100">
+    <div class="login-card shadow-lg p-4 rounded-4 fade-in mt-5">
+      <h2 class="text-center mb-4">Acesso ao Sistema</h2>
+
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="loginEmail" class="form-label">E-mail Escolar</label>
+          <input type="email" class="form-control" id="loginEmail" placeholder="seuemail@esviriato.pt" required />
+        </div>
+        <div class="mb-3">
+          <label for="loginPassword" class="form-label">Senha</label>
+          <input type="password" class="form-control" id="loginPassword" placeholder="Sua senha" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100 glow">Entrar</button>
+        <p class="text-center mt-3 small">Não tem conta? <a href="Registrar.html">Registre-se</a></p>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 - Sistema de Votação Escolar (PAP TGEI)</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
