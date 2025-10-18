@@ -13,8 +13,7 @@
 </head>
 
 <body>
-  <!-- Toast container -->
-  <div class="toast-container"></div>
+
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
@@ -78,34 +77,41 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    function showToast(message, type = "info") {
-  const container = document.querySelector(".toast-container");
-  const toastEl = document.createElement("div");
-  const bgColor = {
-    success: "bg-success text-white",
-    error: "bg-danger text-white",
-    info: "bg-primary text-white",
-    warning: "bg-warning text-dark"
-  }[type] || "bg-primary text-white";
+     // =====================
+  // TOAST FIXO NO TOPO DIREITO
+  // =====================
+  function showToast(message, type = "info") {
+    let container = document.querySelector(".toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "toast-container position-fixed top-0 end-0 p-3";
+      document.body.appendChild(container);
+    }
 
-  toastEl.className = `toast align-items-center ${bgColor} border-0`;
-  toastEl.setAttribute("role", "alert");
-  toastEl.innerHTML = `
-    <div class="d-flex">
-      <div class="toast-body fw-semibold">${message}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-    </div>
-  `;
+    const toastEl = document.createElement("div");
+    const bgColor = {
+      success: "bg-success text-white",
+      error: "bg-danger text-white",
+      info: "bg-primary text-white",
+      warning: "bg-warning text-dark"
+    }[type] || "bg-primary text-white";
 
-  container.appendChild(toastEl);
+    toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
+    toastEl.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    `;
 
-  // Garantir animação
-  requestAnimationFrame(() => toastEl.classList.add("showing"));
+    container.appendChild(toastEl);
 
-  const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 2000 });
-  toastEl.addEventListener("hidden.bs.toast", () => toastEl.remove());
-  toast.show();
-}
+    // Remove automaticamente após 2s
+    setTimeout(() => {
+      toastEl.classList.remove("show");
+      setTimeout(() => toastEl.remove(), 300);
+    }, 2000);
+  }
 
 
 
