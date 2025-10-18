@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a2e0e6da3d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
           <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
           <li class="nav-item registrar-link"><a class="nav-link" href="Login.html">Login</a></li>
         </ul>
-        <button id="theme-toggle" class="btn btn-outline-primary ms-3"><i class="fas fa-moon"></i></button>
+<button id="theme-toggle" class="btn btn-outline-primary ms-3"></button>
       </div>
     </div>
   </nav>
@@ -153,23 +153,7 @@
     }
   });
 
-  // Tema escuro/claro
-  const themeToggle = document.getElementById("theme-toggle");
-  const icon = themeToggle.querySelector("i");
-
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    icon.className = document.body.classList.contains("dark") ? "fas fa-sun" : "fas fa-moon";
-    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
-  });
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark");
-      icon.className = "fas fa-sun";
-    }
-  });
+  
   </script>
 </body>
 </html>

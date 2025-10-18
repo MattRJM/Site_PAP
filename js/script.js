@@ -19,27 +19,38 @@ window.addEventListener('scroll', () => {
 });
 
 // =============================
-// Tema claro/escuro com persistência
+// Tema claro/escuro com persistência 
 // =============================
 const themeToggle = document.getElementById('theme-toggle');
 if (themeToggle) {
-  const icon = themeToggle.querySelector('i');
+  const savedTheme = localStorage.getItem('theme');
 
   // aplica o tema salvo
-  const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
     document.body.classList.add('dark');
-    icon.className = 'fas fa-sun';
+    themeToggle.classList.remove('btn-outline-primary');
+    themeToggle.classList.add('btn-primary');
   }
 
-  // troca o tema
+  // alterna tema ao clicar
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     const darkAtivo = document.body.classList.contains('dark');
-    icon.className = darkAtivo ? 'fas fa-sun' : 'fas fa-moon';
+
+    // muda o estilo do botão
+    if (darkAtivo) {
+      themeToggle.classList.remove('btn-outline-primary');
+      themeToggle.classList.add('btn-primary');
+    } else {
+      themeToggle.classList.remove('btn-primary');
+      themeToggle.classList.add('btn-outline-primary');
+    }
+
     localStorage.setItem('theme', darkAtivo ? 'dark' : 'light');
   });
 }
+
+
 
 // =============================
 // Contador de downloads (simulado)
@@ -89,6 +100,7 @@ if (banner) {
 
   setInterval(trocarImagem, 5000);
 }
+
 
 // =============================
 // Login / Logout global
