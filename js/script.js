@@ -54,7 +54,7 @@ if (downloadCount) {
 }
 
 // =============================
-// Banner rotativo automático
+// Banner rotativo suave
 // =============================
 const banner = document.querySelector('.banner');
 if (banner) {
@@ -63,15 +63,31 @@ if (banner) {
     'img/Votacao.png',
     'img/Admin.png'
   ];
+
+  // Pré-carrega as imagens para evitar piscadas
+  imagens.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
   let indice = 0;
+  banner.style.backgroundImage = `url('${imagens[indice]}')`;
+
+  // Cria uma camada para o fade
+  const fadeLayer = document.createElement('div');
+  fadeLayer.className = 'banner-fade-layer';
+  banner.appendChild(fadeLayer);
 
   function trocarImagem() {
-    banner.style.backgroundImage = `url('${imagens[indice]}')`;
-    indice = (indice + 1) % imagens.length;
+    fadeLayer.style.opacity = '1';
+    setTimeout(() => {
+      indice = (indice + 1) % imagens.length;
+      banner.style.backgroundImage = `url('${imagens[indice]}')`;
+      fadeLayer.style.opacity = '0';
+    }, 800); // tempo da transição
   }
 
-  trocarImagem(); // primeira imagem
-  setInterval(trocarImagem, 5000); // troca a cada 5s
+  setInterval(trocarImagem, 5000);
 }
 
 // =============================
