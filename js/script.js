@@ -4,9 +4,7 @@
 const faders = document.querySelectorAll('.fade-in');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('show');
-    }
+    if (entry.isIntersecting) entry.target.classList.add('show');
   });
 }, { threshold: 0.2 });
 faders.forEach(f => observer.observe(f));
@@ -19,38 +17,23 @@ window.addEventListener('scroll', () => {
 });
 
 // =============================
-// Tema claro/escuro com persistência 
+// Tema claro/escuro
 // =============================
 const themeToggle = document.getElementById('theme-toggle');
 if (themeToggle) {
   const savedTheme = localStorage.getItem('theme');
-
-  // aplica o tema salvo
   if (savedTheme === 'dark') {
     document.body.classList.add('dark');
-    themeToggle.classList.remove('btn-outline-primary');
-    themeToggle.classList.add('btn-primary');
+    themeToggle.classList.replace('btn-outline-primary', 'btn-primary');
   }
 
-  // alterna tema ao clicar
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-    const darkAtivo = document.body.classList.contains('dark');
-
-    // muda o estilo do botão
-    if (darkAtivo) {
-      themeToggle.classList.remove('btn-outline-primary');
-      themeToggle.classList.add('btn-primary');
-    } else {
-      themeToggle.classList.remove('btn-primary');
-      themeToggle.classList.add('btn-outline-primary');
-    }
-
-    localStorage.setItem('theme', darkAtivo ? 'dark' : 'light');
+    themeToggle.classList.toggle('btn-primary');
+    themeToggle.classList.toggle('btn-outline-primary');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
   });
 }
-
-
 
 // =============================
 // Contador de downloads (simulado)
@@ -65,74 +48,79 @@ if (downloadCount) {
 }
 
 // =============================
-// Banner rotativo suave
+// Banner rotativo
 // =============================
 const banner = document.querySelector('.banner');
 if (banner) {
-  const imagens = [
-    'img/Login.png',
-    'img/Votacao.png',
-    'img/Admin.png'
-  ];
-
-  // Pré-carrega as imagens para evitar piscadas
-  imagens.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
+  const imagens = ['img/Login.png', 'img/Votacao.png', 'img/Admin.png'];
+  imagens.forEach(src => { const img = new Image(); img.src = src; });
 
   let indice = 0;
   banner.style.backgroundImage = `url('${imagens[indice]}')`;
 
-  // Cria uma camada para o fade
   const fadeLayer = document.createElement('div');
   fadeLayer.className = 'banner-fade-layer';
   banner.appendChild(fadeLayer);
 
-  function trocarImagem() {
+  setInterval(() => {
     fadeLayer.style.opacity = '1';
     setTimeout(() => {
       indice = (indice + 1) % imagens.length;
       banner.style.backgroundImage = `url('${imagens[indice]}')`;
       fadeLayer.style.opacity = '0';
-    }, 800); // tempo da transição
-  }
-
-  setInterval(trocarImagem, 5000);
+    }, 800);
+  }, 5000);
 }
 
-
 // =============================
-// Login / Logout global
+// Controle de download por login
 // =============================
 window.addEventListener("DOMContentLoaded", () => {
   const usuarioNome = localStorage.getItem("usuarioNome");
-  const navbar = document.querySelector(".navbar-nav");
-  if (!navbar) return;
+  const downloadBtn = document.getElementById("download-btn");
+  const dropdownMenu = downloadBtn.nextElementSibling;
 
   if (usuarioNome) {
-    // Remove o link "Registrar" se existir
-    const registrarLink = navbar.querySelector('a[href="Login.html"]');
-    if (registrarLink) registrarLink.remove();
+    // Usuário logado → habilita botão normalmente
+    downloadBtn.removeAttribute("disabled");
+  } else {
+    // Usuário deslogado → permite clicar para abrir dropdown, mas bloqueia downloads
+    downloadBtn.removeAttribute("disabled"); // permite abrir dropdown visualmente
+    downloadBtn.classList.add("disabled"); // mostra desabilitado
 
-    // Cria dropdown com nome e sair
-    const li = document.createElement("li");
-    li.className = "nav-item dropdown";
-    li.innerHTML = `
-      <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" role="button" data-bs-toggle="dropdown">
-        ${usuarioNome}
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#" id="logout-btn">Sair</a></li>
-      </ul>
-    `;
-    navbar.appendChild(li);
-
-    // Logout
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("usuarioNome");
-      localStorage.removeItem("usuarioEmail");
-      location.reload();
-    });
   }
 });
+
+// =============================
+// Função de toast
+// =============================
+function showToast(message, type = "info") {
+  let container = document.querySelector(".toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.className = "toast-container position-fixed top-0 end-0 p-3";
+    document.body.appendChild(container);
+  }
+
+  const toastEl = document.createElement("div");
+  const bgColor = {
+    success: "bg-success text-white",
+    error: "bg-danger text-white",
+    info: "bg-primary text-white",
+    warning: "bg-warning text-dark"
+  }[type] || "bg-primary text-white";
+
+  toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
+  toastEl.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  `;
+  container.appendChild(toastEl);
+
+  setTimeout(() => {
+    toastEl.classList.remove("show");
+    setTimeout(() => toastEl.remove(), 300);
+  }, 2000);
+}
