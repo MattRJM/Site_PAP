@@ -9,12 +9,11 @@ body,html {
 }
 
 .navbar {
+  background-color: #fff;
   transition: all 0.3s ease;
 }
 
-.navbar.scrolled {
-  background-color: #fff;
-}
+
 
 .navbar .nav-link {
   color: #333; /* padrão claro */
@@ -25,22 +24,39 @@ body,html {
 }
 
 .banner {
+  position: relative;
   height: 100vh;
   background-size: cover;
   background-position: center;
-  position: relative;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
 }
 
 .banner-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 40, 0.55);
+  z-index: 1;
 }
 
 .banner .container {
-  position: relative;
   z-index: 2;
+  position: relative;
 }
+
+.banner h1 {
+  font-weight: 700;
+  font-size: 2.8rem;
+}
+
+.banner p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
 
 .feature-card {
   padding: 2rem 1rem;

@@ -52,29 +52,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
-  // Banner rotativo
-  // =============================
-  const banner = document.querySelector('.banner');
-  if (banner) {
-    const imagens = ['img/Login.png', 'img/Votacao.png', 'img/Admin.png'];
-    imagens.forEach(src => { const img = new Image(); img.src = src; });
+// Banner rotativo suave
+// =============================
+const banner = document.querySelector('.banner');
+if (banner) {
+  const imagens = [
+    'img/Login.png',
+    'img/Votacao.png',
+    'img/Admin.png'
+  ];
 
-    let indice = 0;
-    banner.style.backgroundImage = `url('${imagens[indice]}')`;
+  // Pré-carrega as imagens para evitar piscadas
+  imagens.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
 
-    const fadeLayer = document.createElement('div');
-    fadeLayer.className = 'banner-fade-layer';
-    banner.appendChild(fadeLayer);
+  let indice = 0;
+  banner.style.backgroundImage = `url('${imagens[indice]}')`;
 
-    setInterval(() => {
-      fadeLayer.style.opacity = '1';
-      setTimeout(() => {
-        indice = (indice + 1) % imagens.length;
-        banner.style.backgroundImage = `url('${imagens[indice]}')`;
-        fadeLayer.style.opacity = '0';
-      }, 800);
-    }, 5000);
+  // Cria uma camada para o fade
+  const fadeLayer = document.createElement('div');
+  fadeLayer.className = 'banner-fade-layer';
+  banner.appendChild(fadeLayer);
+
+  function trocarImagem() {
+    fadeLayer.style.opacity = 'o';
+    setTimeout(() => {
+      indice = (indice + 1) % imagens.length;
+      banner.style.backgroundImage = `url('${imagens[indice]}')`;
+      fadeLayer.style.opacity = '0';
+    }, 800); // tempo da transição
   }
+
+  setInterval(trocarImagem, 5000);
+}
+
 
   // =============================
   // Controle de download por login
