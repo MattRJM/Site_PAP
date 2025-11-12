@@ -20,7 +20,7 @@
       apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
       authDomain: "pap---votacao.firebaseapp.com",
       projectId: "pap---votacao",
-      storageBucket: "pap---votacao.firebasestorage.app",
+      storageBucket: "pap---votacao.appspot.com",
       messagingSenderId: "940095484879",
       appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
       measurementId: "G-D49CT9GVF0"
@@ -69,6 +69,9 @@
       const email = form.email.value.trim();
       const valor = parseFloat(form.valor.value);
       const mensagem = form.mensagem.value.trim();
+      const pais = form.pais.value.trim();
+      const cidade = form.cidade.value.trim();
+      const telefone = form.telefone.value.trim();
 
       if (!nome || !email || !valor) {
         showToast("Preencha todos os campos obrigatórios!", "warning");
@@ -77,11 +80,18 @@
 
       try {
         await addDoc(collection(db, "Doacoes"), {
-          nome, email, valor, mensagem, data: serverTimestamp()
+          nome,
+          email,
+          valor,
+          mensagem,
+          pais,
+          cidade,
+          telefone,
+          data: serverTimestamp()
         });
         showToast("🙏 Doação enviada com sucesso!", "success");
         setTimeout(() => {
-        window.location.href = "index.html";
+          window.location.href = "index.html";
         }, 1000);
         form.reset();
       } catch (err) {
@@ -116,35 +126,51 @@
   </nav>
 
   <!-- Formulário -->
-  <section class="d-flex align-items-center justify-content-center vh-100">
-    <div class="login-card shadow-lg p-4 rounded-4 fade-in mt-5">
-      <h2 class="text-center mb-4">Fazer uma Doação</h2>
+  <section class="d-flex align-items-center justify-content-center py-5 mt-5">
+  <div class="login-card shadow-lg p-4 rounded-4 fade-in" style="max-width: 600px; width: 100%;">
+    <h2 class="text-center mb-4">Fazer uma Doação</h2>
 
-      <form id="doacaoForm">
-        <div class="mb-3">
-          <label for="nome" class="form-label">Nome completo *</label>
-          <input type="text" class="form-control" id="nome" name="nome" required>
+    <form id="doacaoForm">
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome completo *</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email *</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="valor" class="form-label">Valor da doação (€) *</label>
+        <input type="number" class="form-control" id="valor" name="valor" min="1" step="0.05" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="mensagem" class="form-label">Mensagem (opcional)</label>
+        <textarea class="form-control" id="mensagem" name="mensagem" rows="2"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="pais" class="form-label">País</label>
+          <input type="text" class="form-control" id="pais" name="pais">
         </div>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email *</label>
-          <input type="email" class="form-control" id="email" name="email" required>
+        <div class="col-md-6 mb-3">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input type="text" class="form-control" id="cidade" name="cidade">
         </div>
+      </div>
 
-        <div class="mb-3">
-          <label for="valor" class="form-label">Valor da doação (€) *</label>
-          <input type="number" class="form-control" id="valor" name="valor" min="1" step="0.01" required>
-        </div>
+      <div class="mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="text" class="form-control" id="telefone" name="telefone">
+      </div>
 
-        <div class="mb-3">
-          <label for="mensagem" class="form-label">Mensagem (opcional)</label>
-          <textarea class="form-control" id="mensagem" name="mensagem" rows="3"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100 glow">Enviar Doação</button>
-      </form>
-    </div>
-  </section>
+      <button type="submit" class="btn btn-primary w-100 glow">Enviar Doação</button>
+    </form>
+  </div>
+</section>
 
   <footer class="mt-5">
     <p>© 2025 - Sistema de Votação Escolar (PAP TGEI)</p>
