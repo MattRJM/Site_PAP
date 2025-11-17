@@ -39,17 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =============================
-  // Contador de downloads (simulado)
-  // =============================
-  const downloadCount = document.getElementById('download-count');
-  if (downloadCount) {
-    let count = parseInt(downloadCount.textContent);
-    setInterval(() => {
-      count += Math.floor(Math.random() * 2);
-      downloadCount.textContent = count;
-    }, 2500);
-  }
+  
 
   // =============================
 // Banner rotativo suave

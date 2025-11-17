@@ -2,7 +2,11 @@
 /* Estilo base (desktop)         */
 /* ============================= */
 
-body,html {
+* {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+body, html {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
@@ -13,10 +17,8 @@ body,html {
   transition: all 0.3s ease;
 }
 
-
-
 .navbar .nav-link {
-  color: #333; /* padrão claro */
+  color: #333;
 }
 
 .navbar .nav-link:hover {
@@ -57,7 +59,6 @@ body,html {
   margin-bottom: 1.5rem;
 }
 
-
 .feature-card {
   padding: 2rem 1rem;
   border-radius: 12px;
@@ -73,7 +74,7 @@ body,html {
 }
 
 .btn.glow {
-  box-shadow: 0 0 10px rgba(0,123,255,0.6);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
 }
 
 footer {
@@ -113,7 +114,6 @@ footer .social-icons a {
   transition: opacity 0.8s ease;
 }
 
-
 /* ============================= */
 /* Responsividade */
 /* ============================= */
@@ -152,7 +152,35 @@ footer .social-icons a {
 }
 
 /* ============================= */
-/* Tema dark */
+/* Seção Doações (consistente)   */
+/* ============================= */
+
+#doacoes {
+  background-color: #fff;
+  color: #212529;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+
+  padding: 4rem 0;
+  text-align: center;
+}
+
+#doacoes h2.section-title {
+  color: #0d6efd;
+  margin-bottom: 2rem;
+}
+
+#doacoes p {
+  max-width: 700px;
+  margin: 0 auto 1.5rem auto;
+  font-size: 1.05rem;
+}
+
+#doacoes .btn {
+  min-width: 180px;
+}
+
+/* ============================= */
+/* Tema dark                     */
 /* ============================= */
 body.dark {
   background-color: #121212;
@@ -164,11 +192,11 @@ body.dark .navbar {
 }
 
 body.dark .navbar .nav-link {
-  color: #f1f1f1; /* links brancos no dark */
+  color: #f1f1f1;
 }
 
 body.dark .navbar .nav-link:hover {
-  color: #0d6efd; /* mantém hover azul */
+  color: #0d6efd;
 }
 
 body.dark .feature-card {
@@ -183,4 +211,24 @@ body.dark footer {
 
 body.dark .feature-card i {
   color: #0d6efd;
+}
+
+/* Tema dark para Doações */
+body.dark #doacoes {
+  background-color: #121212; 
+  color: #f1f1f1;
+}
+
+body.dark #doacoes h2.section-title {
+  color: #0d6efd;
+}
+
+body.dark #doacoes .btn-outline-primary {
+  color: #f1f1f1;
+  border-color: #0d6efd;
+}
+
+body.dark #doacoes .btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
 }
