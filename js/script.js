@@ -122,7 +122,6 @@ if (banner) {
         Olá, ${usuarioNome}
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-        <li><a class="dropdown-item" href="#">Perfil</a></li>
         <li><a class="dropdown-item" href="#" id="logoutBtn">Sair</a></li>
       </ul>
     `;
