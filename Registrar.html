@@ -5,39 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrar — Sistema de Votação Escolar</title>
   <link rel="icon" href="img/transferir.png" type="image/png">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-
 </head>
-
 <body>
 
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand text-primary" href="index.html">Votação Escolar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
-        </ul>
-<button id="theme-toggle" class="btn btn-outline-primary ms-3"></button>
-      </div>
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand text-primary" href="index.html">Votação Escolar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+      </ul>
+      <button id="theme-toggle" class="btn btn-outline-primary ms-3"></button>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- Formulário -->
-  <section class="d-flex align-items-center justify-content-center vh-100">
-    <div class="login-card shadow-lg p-4 rounded-4 fade-in mt-5">
-      <h2 class="text-center mb-4">Criar Conta</h2>
+<section class="d-flex align-items-center justify-content-center vh-100">
+  <div class="login-card shadow-lg p-4 rounded-4 fade-in mt-5">
+    <h2 class="text-center mb-4">Criar Conta</h2>
 
+    <form id="registerForm">
+      <div class="mb-3">
+        <label for="regName" class="form-label">Nome Completo</label>
+        <input type="text" class="form-control" id="regName" placeholder="Ex: João Silva" required />
+      </div>
+      <div class="mb-3">
+        <label for="regEmail" class="form-label">E-mail Escolar</label>
+        <input type="email" class="form-control" id="regEmail" placeholder="seuemail@esviriato.pt" required />
+      </div>
+      <div class="mb-3">
+        <label for="regPassword" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="regPassword" placeholder="Crie uma senha" required />
+      </div>
+      <button type="submit" class="btn btn-primary w-100 glow">Registrar</button>
+      <p class="text-center mt-3 small">Já tem conta? <a href="Login.html">Entrar</a></p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 - Sistema de Votação Escolar (PAP TGEI)</p>
+</footer>
+
+<<<<<<< HEAD
       <form id="registerForm">
         <div class="mb-3">
           <label for="regName" class="form-label">Nome Completo</label>
@@ -82,8 +99,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+=======
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where } 
+    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+  import { getAuth, createUserWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+>>>>>>> 28650a9b221688a85d625c53288b7eb71f7d1e18
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
+    authDomain: "pap---votacao.firebaseapp.com",
+    projectId: "pap---votacao",
+    storageBucket: "pap---votacao.firebasestorage.app",
+    messagingSenderId: "940095484879",
+    appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
+    measurementId: "G-D49CT9GVF0"
+  };
 
+<<<<<<< HEAD
 // =====================
 // FUNÇÃO TOAST
 // =====================
@@ -141,8 +176,83 @@ async function registrarConta(event) {
     if (!querySnapshot.empty) {
       showToast("Este e-mail já está registrado!", "error");
       return;
+=======
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  function showToast(message, type = "info") {
+    let container = document.querySelector(".toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "toast-container position-fixed top-0 end-0 p-3";
+      document.body.appendChild(container);
     }
 
+    const toastEl = document.createElement("div");
+    const bgColor = {
+      success: "bg-success text-white",
+      error: "bg-danger text-white",
+      info: "bg-primary text-white",
+      warning: "bg-warning text-dark"
+    }[type] || "bg-primary text-white";
+
+    toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
+    toastEl.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    `;
+    container.appendChild(toastEl);
+    setTimeout(() => { toastEl.remove(); }, 2000);
+  }
+
+  async function registrarConta(event) {
+    event.preventDefault();
+
+    const nome = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const senha = document.getElementById("regPassword").value.trim();
+
+    if (!email.endsWith("@esviriato.pt")) {
+      showToast("O e-mail deve ser institucional (@esviriato.pt).", "warning");
+      return;
+    }
+
+    try {
+      // Verifica se já existe na Firestore
+      const q = query(collection(db, "contas"), where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        showToast("Este e-mail já está registrado!", "error");
+        return;
+      }
+
+      // Cria usuário no Firebase Authentication
+      await createUserWithEmailAndPassword(auth, email, senha);
+
+      // Salva dados extras na Firestore (sem senha)
+      await addDoc(collection(db, "contas"), {
+        nome: nome,
+        email: email,
+        tipo: "utilizador"
+      });
+
+      localStorage.setItem("usuarioNome", nome);
+      localStorage.setItem("usuarioEmail", email);
+      showToast("Conta criada com sucesso!", "success");
+
+      setTimeout(() => window.location.href = "index.html", 500);
+
+    } catch (error) {
+      console.error("Erro ao registrar:", error);
+      showToast(error.message || "Erro ao criar conta.", "error");
+>>>>>>> 28650a9b221688a85d625c53288b7eb71f7d1e18
+    }
+  }
+
+<<<<<<< HEAD
     // 1) Cria o user no Firebase Auth
     const cred = await createUserWithEmailAndPassword(auth, email, senha);
     const uid = cred.user.uid;
@@ -171,8 +281,14 @@ window.addEventListener("DOMContentLoaded", () =>
 );
 </script>
 
+=======
+  window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("registerForm").addEventListener("submit", registrarConta);
+  });
+</script>
+>>>>>>> 28650a9b221688a85d625c53288b7eb71f7d1e18
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
