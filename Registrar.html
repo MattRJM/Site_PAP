@@ -63,109 +63,114 @@
 
   <!-- Firebase + JS -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where } 
-    from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } 
+from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
+  authDomain: "pap---votacao.firebaseapp.com",
+  projectId: "pap---votacao",
+  storageBucket: "pap---votacao.firebasestorage.app",
+  messagingSenderId: "940095484879",
+  appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
+  measurementId: "G-D49CT9GVF0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
-      authDomain: "pap---votacao.firebaseapp.com",
-      projectId: "pap---votacao",
-      storageBucket: "pap---votacao.firebasestorage.app",
-      messagingSenderId: "940095484879",
-      appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
-      measurementId: "G-D49CT9GVF0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-     // =====================
-  // TOAST FIXO NO TOPO DIREITO
-  // =====================
-  function showToast(message, type = "info") {
-    let container = document.querySelector(".toast-container");
-    if (!container) {
-      container = document.createElement("div");
-      container.className = "toast-container position-fixed top-0 end-0 p-3";
-      document.body.appendChild(container);
-    }
-
-    const toastEl = document.createElement("div");
-    const bgColor = {
-      success: "bg-success text-white",
-      error: "bg-danger text-white",
-      info: "bg-primary text-white",
-      warning: "bg-warning text-dark"
-    }[type] || "bg-primary text-white";
-
-    toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
-    toastEl.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body fw-semibold">${message}</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-      </div>
-    `;
-
-    container.appendChild(toastEl);
-
-    // Remove automaticamente após 2s
-    setTimeout(() => {
-      toastEl.classList.remove("show");
-      setTimeout(() => toastEl.remove(), 300);
-    }, 2000);
+// =====================
+// FUNÇÃO TOAST
+// =====================
+function showToast(message, type = "info") {
+  let container = document.querySelector(".toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.className = "toast-container position-fixed top-0 end-0 p-3";
+    document.body.appendChild(container);
   }
 
+  const toastEl = document.createElement("div");
+  const bgColor = {
+    success: "bg-success text-white",
+    error: "bg-danger text-white",
+    info: "bg-primary text-white",
+    warning: "bg-warning text-dark"
+  }[type] || "bg-primary text-white";
 
+  toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
+  toastEl.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  `;
+  container.appendChild(toastEl);
 
-    async function registrarConta(event) {
-      event.preventDefault();
+  setTimeout(() => {
+    toastEl.classList.remove("show");
+    setTimeout(() => toastEl.remove(), 300);
+  }, 2000);
+}
 
-      const nome = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
-      const senha = document.getElementById("regPassword").value.trim();
+// =====================
+// REGISTRO
+// =====================
+async function registrarConta(event) {
+  event.preventDefault();
 
-      if (!email.endsWith("@esviriato.pt") || !email.startsWith("a")) {
-        showToast("O e-mail deve ser institucional (a12345@esviriato.pt).", "warning");
-        return;
-      }
+  const nome = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const senha = document.getElementById("regPassword").value.trim();
 
-      try {
-        const q = query(collection(db, "contas"), where("email", "==", email));
-        const querySnapshot = await getDocs(q);
+  if (!email.endsWith("@esviriato.pt") || !email.startsWith("a")) {
+    showToast("O e-mail deve ser institucional (a12345@esviriato.pt).", "warning");
+    return;
+  }
 
-        if (!querySnapshot.empty) {
-          showToast("Este e-mail já está registrado!", "error");
-          return;
-        }
+  try {
+    // Verifica duplicidade no Firestore
+    const q = query(collection(db, "contas"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
 
-        const snapshot = await getDocs(collection(db, "contas"));
-        const num = snapshot.size + 1;
-        const docName = `user${num}`;
-
-       await addDoc(collection(db, "contas"), {
-        nome: nome,
-        email: email,
-        senha: senha,
-        tipo: "utilizador"
-      });
-
-        localStorage.setItem("usuarioNome", nome);
-        localStorage.setItem("usuarioEmail", email);
-        showToast("Conta criada com sucesso!", "success");
-
-        setTimeout(() => window.location.href = "index.html", 500);
-      } catch (error) {
-        console.error("Erro ao registrar:", error);
-        showToast("Erro ao criar conta. Veja o console.", "error");
-      }
+    if (!querySnapshot.empty) {
+      showToast("Este e-mail já está registrado!", "error");
+      return;
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("registerForm").addEventListener("submit", registrarConta);
+    // 1) Cria o user no Firebase Auth
+    const cred = await createUserWithEmailAndPassword(auth, email, senha);
+    const uid = cred.user.uid;
+    console.log("Criado no Auth com UID:", uid);
+
+    // 2) Salva infos no Firestore
+    await addDoc(collection(db, "contas"), {
+      uid: uid,
+      nome: nome,
+      email: email,
+      tipo: "utilizador"
     });
-  </script>
+
+    showToast("Conta criada com sucesso!", "success");
+
+    setTimeout(() => window.location.href = "index.html", 800);
+
+  } catch (error) {
+    console.error(error);
+    showToast("Erro ao registrar. Verifique os dados e tente novamente.", "error");
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () =>
+  document.getElementById("registerForm").addEventListener("submit", registrarConta)
+);
+</script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/script.js"></script>

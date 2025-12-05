@@ -13,109 +13,136 @@
 
   <!-- Firebase -->
  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } 
+from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
-    authDomain: "pap---votacao.firebaseapp.com",
-    projectId: "pap---votacao",
-    storageBucket: "pap---votacao.firebasestorage.app",
-    messagingSenderId: "940095484879",
-    appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
-    measurementId: "G-D49CT9GVF0"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
+  authDomain: "pap---votacao.firebaseapp.com",
+  projectId: "pap---votacao",
+  storageBucket: "pap---votacao.firebasestorage.app",
+  messagingSenderId: "940095484879",
+  appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
+  measurementId: "G-D49CT9GVF0"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-  // =====================
-  // TOAST FIXO NO TOPO DIREITO
-  // =====================
-  function showToast(message, type = "info") {
-    let container = document.querySelector(".toast-container");
-    if (!container) {
-      container = document.createElement("div");
-      container.className = "toast-container position-fixed top-0 end-0 p-3";
-      document.body.appendChild(container);
-    }
 
-    const toastEl = document.createElement("div");
-    const bgColor = {
-      success: "bg-success text-white",
-      error: "bg-danger text-white",
-      info: "bg-primary text-white",
-      warning: "bg-warning text-dark"
-    }[type] || "bg-primary text-white";
-
-    toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
-    toastEl.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body fw-semibold">${message}</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-      </div>
-    `;
-
-    container.appendChild(toastEl);
-
-    // Remove automaticamente após 2s
-    setTimeout(() => {
-      toastEl.classList.remove("show");
-      setTimeout(() => toastEl.remove(), 300);
-    }, 2000);
+// =====================
+// FUNÇÃO TOAST
+// =====================
+function showToast(message, type = "info") {
+  let container = document.querySelector(".toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.className = "toast-container position-fixed top-0 end-0 p-3";
+    document.body.appendChild(container);
   }
 
-  // =====================
-  // LOGIN FIREBASE
-  // =====================
-  async function fazerLogin(event) {
-    event.preventDefault();
+  const toastEl = document.createElement("div");
+  const bgColor = {
+    success: "bg-success text-white",
+    error: "bg-danger text-white",
+    info: "bg-primary text-white",
+    warning: "bg-warning text-dark"
+  }[type] || "bg-primary text-white";
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const senha = document.getElementById("loginPassword").value.trim();
+  toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
+  toastEl.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">${message}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  `;
+  container.appendChild(toastEl);
 
-    if (!email || !senha) {
-      showToast("Preencha todos os campos!", "warning");
-      return;
-    }
+  setTimeout(() => {
+    toastEl.classList.remove("show");
+    setTimeout(() => toastEl.remove(), 300);
+  }, 2000);
+}
 
-    // Verifica se o e-mail é da escola
-    if (!email.endsWith("@esviriato.pt")) {
-      showToast("Use apenas o e-mail escolar (@esviriato.pt)", "warning");
-      return;
-    }
 
-    try {
-      const q = query(collection(db, "contas"), where("email", "==", email), where("senha", "==", senha));
-      const snapshot = await getDocs(q);
+// =====================
+// LOGIN
+// =====================
+async function fazerLogin(event) {
+  event.preventDefault();
 
-      if (!snapshot.empty) {
-        const user = snapshot.docs[0].data();
-        localStorage.setItem("usuarioNome", user.nome);
-        localStorage.setItem("usuarioEmail", user.email);
+  const email = document.getElementById("loginEmail").value.trim();
+  const senha = document.getElementById("loginPassword").value.trim();
 
-        showToast("Login realizado com sucesso!", "success");
-
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 500);
-      } else {
-        showToast("E-mail ou senha incorretos!", "error");
-      }
-    } catch (err) {
-      console.error(err);
-      showToast("Erro ao conectar. Tente novamente.", "error");
-    }
+  if (!email || !senha) {
+    showToast("Preencha todos os campos!", "warning");
+    return;
   }
 
-  // =====================
-  // EVENTO DO FORM
-  // =====================
-  window.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("loginForm");
-    if (form) form.addEventListener("submit", fazerLogin);
-  });
+  try {
+    // Login usando Auth
+    const cred = await signInWithEmailAndPassword(auth, email, senha);
+    const uid = cred.user.uid;
+
+    // Buscar dados do usuário no Firestore
+    const q = query(collection(db, "contas"), where("uid", "==", uid));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const user = snapshot.docs[0].data();
+
+      localStorage.setItem("usuarioNome", user.nome);
+      localStorage.setItem("usuarioEmail", user.email);
+      localStorage.setItem("usuarioTipo", user.tipo);
+
+      showToast("Login realizado com sucesso!", "success");
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 800);
+
+    }  else {
+      showToast("Erro ao carregar dados do perfil.", "error");
+    }
+
+  } catch (error) {
+    console.error(error);
+    showToast("E-mail ou senha incorretos!", "error");
+  }
+}
+
+
+// =====================
+// Recuperação de senha
+// =====================
+async function recuperarSenha() {
+  const email = document.getElementById("loginEmail").value.trim();
+
+  if (!email) {
+    showToast("Digite seu email para recuperar a senha!", "warning");
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showToast("E-mail de recuperação enviado!", "success");
+  } catch (err) {
+    showToast("Email não encontrado!", "error");
+  }
+}
+
+
+// Listener do form
+window.addEventListener("DOMContentLoaded", () =>
+  document.getElementById("loginForm").addEventListener("submit", fazerLogin)
+);
 </script>
+
+
+
 
 
 </head>
@@ -148,12 +175,19 @@
           <label for="loginEmail" class="form-label">E-mail Escolar</label>
           <input type="email" class="form-control" id="loginEmail" placeholder="seuemail@esviriato.pt" required />
         </div>
+        
         <div class="mb-3">
           <label for="loginPassword" class="form-label">Senha</label>
           <input type="password" class="form-control" id="loginPassword" placeholder="Sua senha" required />
         </div>
         <button type="submit" class="btn btn-primary w-100 glow">Entrar</button>
         <p class="text-center mt-3 small">Não tem conta? <a href="Registrar.html">Registre-se</a></p>
+        <button type="button" class="btn btn-link w-100 mt-2"
+        onclick="window.location.href='recuperar.html'">
+        Esqueceu a senha?
+        </button>
+
+
       </form>
     </div>
   </section>

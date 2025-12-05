@@ -158,8 +158,7 @@ footer .social-icons a {
 #doacoes {
   background-color: #fff;
   color: #212529;
-    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   padding: 4rem 0;
   text-align: center;
 }
@@ -231,4 +230,161 @@ body.dark #doacoes .btn-outline-primary {
 body.dark #doacoes .btn-outline-primary:hover {
   background-color: #0d6efd;
   color: #fff;
+}
+
+/* ============================= */
+/* Estilo das páginas de Login / Reset / Recuperar */
+/* ============================= */
+
+.auth-container {
+  width: 380px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.1);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.auth-container h3 {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.auth-container .form-label {
+  font-weight: 500;
+}
+
+.auth-container .btn-primary {
+  width: 100%;
+  font-weight: 500;
+  padding: 0.6rem;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.auth-link a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* Centralização vertical */
+.auth-wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================= */
+/* Tema Dark para Login / Reset / Recuperar */
+/* ============================= */
+body.dark .auth-container {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  box-shadow: 0 0 25px rgba(255,255,255,0.05);
+}
+
+body.dark .auth-container input {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+body.dark .auth-container input:focus {
+  border-color: #0d6efd;
+}
+
+body.dark .auth-link a {
+  color: #0d6efd;
+}
+
+/* ============================= */
+/* Corrigir textos gerais no dark */
+/* ============================= */
+body.dark,
+body.dark p,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark label,
+body.dark .form-label,
+body.dark .nav-link,
+body.dark .navbar-brand,
+body.dark a {
+  color: #f1f1f1 !important;
+}
+
+/* Links azuis no dark */
+body.dark a {
+  color: #79b7ff !important;
+}
+
+/* Botões no dark */
+body.dark .btn-primary {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+body.dark .btn-link {
+  color: #79b7ff !important;
+}
+
+/* Inputs gerais no dark mode (Recuperar.html) */
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background-color: #2a2a2a !important;
+  color: #f1f1f1 !important;
+  border: 1px solid #444 !important;
+}
+
+/* ============================= */
+/* Dark mode para labels, inputs e textos */
+/* ============================= */
+body.dark .auth-container {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  box-shadow: 0 0 25px rgba(255,255,255,0.05);
+}
+
+body.dark .auth-container input,
+body.dark .auth-container textarea,
+body.dark .auth-container select {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+body.dark .auth-container input::placeholder {
+  color: #aaa;
+}
+
+body.dark .auth-container .form-label {
+  color: #f1f1f1;
+}
+
+body.dark .auth-container a {
+  color: #79b7ff;
+}
+
+body.dark .btn-primary {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+body.dark .btn-link {
+  color: #79b7ff;
 }
