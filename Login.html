@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-<<<<<<< HEAD
   <!-- Firebase -->
  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
@@ -146,103 +145,6 @@ window.addEventListener("DOMContentLoaded", () =>
 
 
 
-=======
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCE_WPEt7T9eqqjlgrJCssWw2KZmmHcDxA",
-      authDomain: "pap---votacao.firebaseapp.com",
-      projectId: "pap---votacao",
-      storageBucket: "pap---votacao.firebasestorage.app",
-      messagingSenderId: "940095484879",
-      appId: "1:940095484879:web:80cfed4fbe2fea8fe058ba",
-      measurementId: "G-D49CT9GVF0"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    function showToast(message, type = "info") {
-      let container = document.querySelector(".toast-container");
-      if (!container) {
-        container = document.createElement("div");
-        container.className = "toast-container position-fixed top-0 end-0 p-3";
-        document.body.appendChild(container);
-      }
-
-      const toastEl = document.createElement("div");
-      const bgColor = {
-        success: "bg-success text-white",
-        error: "bg-danger text-white",
-        info: "bg-primary text-white",
-        warning: "bg-warning text-dark"
-      }[type] || "bg-primary text-white";
-
-      toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
-      toastEl.innerHTML = `
-        <div class="d-flex">
-          <div class="toast-body fw-semibold">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-      `;
-      container.appendChild(toastEl);
-      setTimeout(() => { toastEl.remove(); }, 2000);
-    }
-
-    async function fazerLogin(event) {
-      event.preventDefault();
-
-      const email = document.getElementById("loginEmail").value.trim();
-      const senha = document.getElementById("loginPassword").value.trim();
-
-      if (!email || !senha) {
-        showToast("Preencha todos os campos!", "warning");
-        return;
-      }
-
-      if (!email.endsWith("@esviriato.pt")) {
-        showToast("Use apenas o e-mail escolar (@esviriato.pt)", "warning");
-        return;
-      }
-
-      try {
-        // Login via Firebase Auth
-        const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-        const user = userCredential.user;
-
-        // Pegar nome do usuário na Firestore
-        const q = query(collection(db, "contas"), where("email", "==", email));
-        const snapshot = await getDocs(q);
-        let nome = email; // caso não encontre nome na Firestore
-        if (!snapshot.empty) {
-          nome = snapshot.docs[0].data().nome;
-        }
-
-        localStorage.setItem("usuarioNome", nome);
-        localStorage.setItem("usuarioEmail", email);
-
-        showToast("Login realizado com sucesso!", "success");
-
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 500);
-
-      } catch (error) {
-        console.error(error);
-        showToast("E-mail ou senha incorretos!", "error");
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("loginForm");
-      if (form) form.addEventListener("submit", fazerLogin);
-    });
-  </script>
->>>>>>> 28650a9b221688a85d625c53288b7eb71f7d1e18
 </head>
 
 <body>
