@@ -367,9 +367,30 @@ body.dark .auth-container select {
   border: 1px solid #444;
 }
 
-body.dark .auth-container input::placeholder {
-  color: #aaa;
+/* ============================= */
+/* Placeholder - Tema Claro     */
+/* ============================= */
+
+::placeholder {
+  color: #6c757d;
+  opacity: 1;
 }
+
+/* ============================= */
+/* Placeholder - Tema Escuro    */
+/* ============================= */
+
+body.dark ::placeholder {
+  color: #adb5bd;
+  opacity: 1;
+}
+
+/* Para compatibilidade máxima */
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+  color: #adb5bd;
+}
+
 
 body.dark .auth-container .form-label {
   color: #f1f1f1;
@@ -387,4 +408,23 @@ body.dark .btn-primary {
 
 body.dark .btn-link {
   color: #79b7ff;
+}
+
+/* Texto info */
+#info {
+  color: #6c757d;
+}
+
+/* Email em destaque */
+.email-highlight {
+  color: #0d6efd;
+}
+
+/* Dark mode */
+body.dark #info {
+  color: #adb5bd;
+}
+
+body.dark .email-highlight {
+  color: #4dabf7;
 }
