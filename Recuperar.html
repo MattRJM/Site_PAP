@@ -92,11 +92,20 @@
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const email = document.getElementById("emailRecuperar").value;
+    const email = document.getElementById("emailRecuperar").value.trim();
 
     try {
-      await sendPasswordResetEmail(auth, email);
-      window.location.href = "confirmacao.html";
+      const currentPath = window.location.pathname;
+      const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+      const resetUrl = `${window.location.origin}${basePath}/reset.html`;
+
+      const actionCodeSettings = {
+        url: resetUrl,
+        handleCodeInApp: true
+      };
+
+      await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      window.location.href = "Confirmacao.html";
     } catch (error) {
       alert("Erro: " + error.message);
     }

@@ -102,7 +102,16 @@
       }
 
       try {
-        await sendPasswordResetEmail(auth, email);
+        const currentPath = window.location.pathname;
+        const basePath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+        const resetUrl = `${window.location.origin}${basePath}/reset.html`;
+
+        const actionCodeSettings = {
+          url: resetUrl,
+          handleCodeInApp: true
+        };
+
+        await sendPasswordResetEmail(auth, email, actionCodeSettings);
         showToast("E-mail de recuperação enviado!", "success");
       } catch (err) {
         showToast("Email não encontrado!", "error");
@@ -180,7 +189,7 @@
             <button type="submit" class="btn btn-primary w-100 glow">Entrar</button>
             <p class="text-center mt-3 small">Não tem conta? <a href="Registrar.html">Registre-se</a></p>
             <button type="button" class="btn btn-link w-100 mt-2"
-            onclick="window.location.href='recuperar.html'">
+            onclick="window.location.href='Recuperar.html'">
             Esqueceu a senha?
             </button>
 
