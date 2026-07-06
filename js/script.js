@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Navbar muda ao rolar
   // =============================
   const navbar = document.querySelector('.navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
-  });
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+  }
 
   // =============================
   // Tema claro/escuro
@@ -39,45 +41,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  
-
   // =============================
-// Banner rotativo suave
-// =============================
-const banner = document.querySelector('.banner');
-if (banner) {
-  const imagens = [
-    'img/Login.png',
-    'img/Votacao.png',
-    'img/Admin.png'
-  ];
+  // Mockup Interativo (Seção Sobre)
+  // =============================
+  const mockupTabBtns = document.querySelectorAll('.mockup-tab-btn');
+  const mockupImgs = document.querySelectorAll('.mockup-img');
 
-  // Pré-carrega as imagens para evitar piscadas
-  imagens.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
+  if (mockupTabBtns.length > 0 && mockupImgs.length > 0) {
+    mockupTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remover classe ativa dos botões
+        mockupTabBtns.forEach(b => b.classList.remove('active'));
+        // Adicionar ao botão clicado
+        btn.classList.add('active');
 
-  let indice = 0;
-  banner.style.backgroundImage = `url('${imagens[indice]}')`;
-
-  // Cria uma camada para o fade
-  const fadeLayer = document.createElement('div');
-  fadeLayer.className = 'banner-fade-layer';
-  banner.appendChild(fadeLayer);
-
-  function trocarImagem() {
-    fadeLayer.style.opacity = 'o';
-    setTimeout(() => {
-      indice = (indice + 1) % imagens.length;
-      banner.style.backgroundImage = `url('${imagens[indice]}')`;
-      fadeLayer.style.opacity = '0';
-    }, 800); // tempo da transição
+        // Esconder todas as imagens
+        mockupImgs.forEach(img => img.classList.remove('active'));
+        
+        // Mostrar a imagem correspondente
+        const targetId = btn.getAttribute('data-target');
+        const targetImg = document.getElementById(targetId);
+        if (targetImg) {
+          targetImg.classList.add('active');
+        }
+      });
+    });
   }
-
-  setInterval(trocarImagem, 5000);
-}
-
 
   // =============================
   // Controle de download por login
@@ -122,13 +111,36 @@ if (banner) {
       logoutBtn.addEventListener("click", () => {
         localStorage.removeItem("usuarioNome");
         localStorage.removeItem("usuarioEmail");
+        localStorage.removeItem("usuarioUID");
         window.location.reload();
       });
     }
   }
 
   // =============================
-  // Função de toast
+  // Visualização de Password Genérica (Dry)
+  // =============================
+  const toggleBtn = document.getElementById("togglePassword");
+  const passwordInput = document.getElementById("loginPassword") || document.getElementById("regPassword") || document.getElementById("novaSenha");
+
+  if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      
+      const icon = toggleBtn.querySelector("i");
+      if (icon) {
+        if (icon.classList.contains("bi")) {
+          icon.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
+        } else {
+          icon.className = isPassword ? "fas fa-eye-slash" : "fas fa-eye";
+        }
+      }
+    });
+  }
+
+  // =============================
+  // Função Global de Toast
   // =============================
   function showToast(message, type = "info") {
     let container = document.querySelector(".toast-container");
@@ -161,7 +173,6 @@ if (banner) {
     }, 2000);
   }
 
+  // Exportar função globalmente para uso em scripts inline
+  window.showToast = showToast;
 });
-
-
-

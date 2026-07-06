@@ -7,7 +7,7 @@
 
   <link rel="icon" href="img/transferir.png" type="image/png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1.0.1">
 
   <style>
     body {
@@ -17,11 +17,19 @@
 </head>
 
 <body>
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
 
 <!-- ============== NAVBAR (IDÊNTICA AO LOGIN) ============== -->
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
   <div class="container">
-    <a class="navbar-brand text-primary" href="index.html">Votação Escolar</a>
+    <a class="navbar-brand text-primary d-flex align-items-center" href="index.html">
+      <img src="img/transferir.png" alt="Logo" width="30" height="30" class="d-inline-block align-top me-2">
+      Votação Escolar
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
       <span class="navbar-toggler-icon"></span>
@@ -39,7 +47,7 @@
 <!-- ========================================================= -->
 
 <div class="d-flex align-items-center justify-content-center">
-  <div class="shadow-lg p-4 rounded-4" style="width: 380px;">
+  <div class="login-card shadow-lg p-4 rounded-4" style="width: 380px;">
     <h3 class="text-center mb-3">Recuperar Senha</h3>
     <p class="text-center small text-muted form-label">
       Digite seu e-mail escolar para receber o link de recuperação.
@@ -60,11 +68,7 @@
   </div>
 </div>
 
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- ======= DARK MODE ======= -->
-<script src="js/theme.js"></script>
 
 <!-- Firebase -->
 <script type="module">
@@ -101,5 +105,5 @@
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=1.0.1"></script>
 </html>

@@ -7,7 +7,7 @@
   <link rel="icon" href="img/transferir.png" type="image/png">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1.0.1">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
@@ -29,36 +29,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Toast fixo no topo direito
     function showToast(message, type = "info") {
-      let container = document.querySelector(".toast-container");
-      if (!container) {
-        container = document.createElement("div");
-        container.className = "toast-container position-fixed top-0 end-0 p-3";
-        document.body.appendChild(container);
+      if (typeof window.showToast === "function") {
+        window.showToast(message, type);
+      } else {
+        console.log(message);
       }
-
-      const toastEl = document.createElement("div");
-      const bgColor = {
-        success: "bg-success text-white",
-        error: "bg-danger text-white",
-        info: "bg-primary text-white",
-        warning: "bg-warning text-dark"
-      }[type] || "bg-primary text-white";
-
-      toastEl.className = `toast align-items-center ${bgColor} border-0 shadow mt-2 show`;
-      toastEl.innerHTML = `
-        <div class="d-flex">
-          <div class="toast-body fw-semibold">${message}</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-      `;
-
-      container.appendChild(toastEl);
-      setTimeout(() => {
-        toastEl.classList.remove("show");
-        setTimeout(() => toastEl.remove(), 300);
-      }, 2000);
     }
 
     // Envio do formulário para Firestore
@@ -109,10 +85,18 @@
 </head>
 
 <body>
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand text-primary" href="index.html">Votação Escolar</a>
+      <a class="navbar-brand text-primary d-flex align-items-center" href="index.html">
+        <img src="img/transferir.png" alt="Logo" width="30" height="30" class="d-inline-block align-top me-2">
+        Votação Escolar
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -177,6 +161,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=1.0.1"></script>
 </body>
 </html>

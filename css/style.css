@@ -28,10 +28,10 @@ body, html {
 .banner {
   position: relative;
   height: 100vh;
+  background-image: url('../img/image-2.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 1s ease-in-out;
 }
 
 .banner-overlay {
@@ -40,7 +40,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 40, 0.55);
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.75) 0%, rgba(18, 18, 18, 0.85) 100%);
   z-index: 1;
 }
 
@@ -428,3 +428,157 @@ body.dark #info {
 body.dark .email-highlight {
   color: #4dabf7;
 }
+
+/* ============================= */
+/* Custom Layout & Components    */
+/* ============================= */
+
+/* Cartão de login / doações */
+.login-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-2px);
+}
+
+body.dark .login-card {
+  background-color: #1f1f1f;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Mockup de Janela Desktop Interativo */
+.mockup-window {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: #f8f9fa;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.dark .mockup-window {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.06);
+  background-color: #1a1a1a;
+}
+
+.mockup-header {
+  height: 45px;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+body.dark .mockup-header {
+  background-color: #262626;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.mockup-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.mockup-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mockup-dot.red { background-color: #ff5f56; }
+.mockup-dot.yellow { background-color: #ffbd2e; }
+.mockup-dot.green { background-color: #27c93f; }
+
+.mockup-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.mockup-tab-btn {
+  background: none;
+  border: none;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px 6px 0 0;
+  color: #6c757d;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: all 0.2s ease;
+}
+
+.mockup-tab-btn:hover {
+  color: #0d6efd;
+}
+
+body.dark .mockup-tab-btn:hover {
+  color: #79b7ff;
+}
+
+.mockup-tab-btn.active {
+  background-color: #ffffff;
+  color: #0d6efd;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.dark .mockup-tab-btn.active {
+  background-color: #121212;
+  color: #79b7ff;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.mockup-content {
+  background-color: #ffffff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+body.dark .mockup-content {
+  background-color: #121212;
+}
+
+.mockup-img {
+  display: none;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mockup-img.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Banner Overlay com Gradiente */
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.75) 0%, rgba(18, 18, 18, 0.85) 100%);
+  z-index: 1;
+}
+
+/* Melhorias de consistência do Navbar */
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+.navbar-brand:hover img {
+  transform: rotate(-5deg) scale(1.05);
+}
+
